@@ -1,0 +1,264 @@
+{
+    "levels": [
+        {
+            "id": "level_1",
+            "title": "Very Easy (Basic Arithmetic & I/O)",
+            "problem_description": "Write a C++ program that asks the user for two integers and prints their sum.",
+            "reference_solution": {
+                "language": "C++",
+                "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a + b;\n    return 0;\n}\n"
+            },
+            "grading_rubric": {
+                "total_points": 10,
+                "criteria": [
+                    {
+                        "name": "Correctness",
+                        "points": 5,
+                        "description": "Does it actually add two numbers and print the result?"
+                    },
+                    {
+                        "name": "Input Handling",
+                        "points": 3,
+                        "description": "Does it use cin correctly to get two variables?"
+                    },
+                    {
+                        "name": "Syntax",
+                        "points": 2,
+                        "description": "Does it include <iostream> and compile without errors?"
+                    }
+                ]
+            },
+            "sample_answers": [
+                {
+                    "id": "sample_a",
+                    "label": "Correct",
+                    "score": 10,
+                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a + b;\n    return 0;\n}\n",
+                    "notes": "Standard code similar to reference."
+                },
+                {
+                    "id": "sample_b",
+                    "label": "Logic Error",
+                    "score": 5,
+                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a * b;\n    return 0;\n}\n",
+                    "notes": "Student uses cout << a * b; instead of +."
+                },
+                {
+                    "id": "sample_c",
+                    "label": "Syntax Error",
+                    "score": 2,
+                    "code": "using namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a + b;\n    return 0;\n}\n",
+                    "notes": "Student forgets #include <iostream>."
+                }
+            ]
+        },
+        {
+            "id": "level_2",
+            "title": "Easy (Control Flow & Loops)",
+            "problem_description": "Write a program that takes an integer N and prints the factorial of N. (Example: If N=5, output 120).",
+            "reference_solution": {
+                "language": "C++",
+                "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    long long factorial = 1;\n    cin >> n;\n    if (n < 0) return 1;\n    for(int i = 1; i <= n; ++i) {\n        factorial *= i;\n    }\n    cout << factorial;\n    return 0;\n}\n"
+            },
+            "grading_rubric": {
+                "total_points": 20,
+                "criteria": [
+                    {
+                        "name": "Loop Logic",
+                        "points": 10,
+                        "description": "Correct use of a for or while loop to multiply numbers."
+                    },
+                    {
+                        "name": "Initialization",
+                        "points": 5,
+                        "description": "Does the factorial variable start at 1? (Starting at 0 is a common fail)."
+                    },
+                    {
+                        "name": "Edge Case",
+                        "points": 5,
+                        "description": "Does it handle 0! (which is 1) or negative numbers?"
+                    }
+                ]
+            },
+            "sample_answers": [
+                {
+                    "id": "sample_a",
+                    "label": "Correct",
+                    "score": 20,
+                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    long long factorial = 1;\n    cin >> n;\n    if (n < 0) return 1;\n    for (int i = 1; i <= n; ++i) {\n        factorial *= i;\n    }\n    cout << factorial;\n    return 0;\n}\n",
+                    "notes": "Perfect loop and initialization."
+                },
+                {
+                    "id": "sample_b",
+                    "label": "Partial",
+                    "score": 12,
+                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    long long factorial = 1;\n    cin >> n;\n    for (int i = 0; i <= n; ++i) {\n        factorial *= i;\n    }\n    cout << factorial;\n    return 0;\n}\n",
+                    "notes": "Loop starts at 0, resulting in the answer always being 0."
+                },
+                {
+                    "id": "sample_c",
+                    "label": "Incorrect",
+                    "score": 5,
+                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    for (int i = 1; i <= n; ++i) {\n        cout << i << \" \";\n    }\n    return 0;\n}\n",
+                    "notes": "Prints numbers from 1 to N but doesn't multiply them."
+                }
+            ]
+        },
+        {
+            "id": "level_3",
+            "title": "Medium (Arrays & Strings)",
+            "problem_description": "Write a function bool isPalindrome(string s) that returns true if a string reads the same forward and backward.",
+            "reference_solution": {
+                "language": "C++",
+                "code": "#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    string rev = s;\n    reverse(rev.begin(), rev.end());\n    return s == rev;\n}\n"
+            },
+            "grading_rubric": {
+                "total_points": 20,
+                "criteria": [
+                    {
+                        "name": "Algorithm",
+                        "points": 10,
+                        "description": "Correctly compares characters from front and back."
+                    },
+                    {
+                        "name": "String Handling",
+                        "points": 5,
+                        "description": "Uses string library correctly."
+                    },
+                    {
+                        "name": "Efficiency",
+                        "points": 5,
+                        "description": "Does it avoid unnecessary extra loops?"
+                    }
+                ]
+            },
+            "sample_answers": [
+                {
+                    "id": "sample_a",
+                    "label": "Correct",
+                    "score": 20,
+                    "code": "#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    string rev = s;\n    reverse(rev.begin(), rev.end());\n    return s == rev;\n}\n",
+                    "notes": "Correctly reverses the string and compares."
+                },
+                {
+                    "id": "sample_b",
+                    "label": "Logic Error",
+                    "score": 10,
+                    "code": "#include <string>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    if (s.empty()) return true;\n    return s.front() == s.back();\n}\n",
+                    "notes": "Only checks the first and last letters."
+                },
+                {
+                    "id": "sample_c",
+                    "label": "Syntax Error",
+                    "score": 0,
+                    "code": "bool isPalindrome(char s[]) {\n    int n = s.length();\n    return true;\n}\n",
+                    "notes": "Code uses char[] incorrectly and doesn't compile."
+                }
+            ]
+        },
+        {
+            "id": "level_4",
+            "title": "Hard (Recursion)",
+            "problem_description": "Write a recursive function to find the Nth Fibonacci number.",
+            "reference_solution": {
+                "language": "C++",
+                "code": "int fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n"
+            },
+            "grading_rubric": {
+                "total_points": 25,
+                "criteria": [
+                    {
+                        "name": "Base Case",
+                        "points": 10,
+                        "description": "Checks for n <= 1 or n == 0, n == 1."
+                    },
+                    {
+                        "name": "Recursive Step",
+                        "points": 10,
+                        "description": "Calls the function twice and adds the results."
+                    },
+                    {
+                        "name": "Function Signature",
+                        "points": 5,
+                        "description": "Correct return types and parameters."
+                    }
+                ]
+            },
+            "sample_answers": [
+                {
+                    "id": "sample_a",
+                    "label": "Correct",
+                    "score": 25,
+                    "code": "int fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n",
+                    "notes": "Uses recursion with proper base cases."
+                },
+                {
+                    "id": "sample_b",
+                    "label": "Logic Error",
+                    "score": 12,
+                    "code": "int fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 1);\n}\n",
+                    "notes": "Calls fibonacci(n - 1) twice instead of n - 1 and n - 2."
+                },
+                {
+                    "id": "sample_c",
+                    "label": "Syntax Error",
+                    "score": 5,
+                    "code": "fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n",
+                    "notes": "Missing function return type or has mismatched braces."
+                }
+            ]
+        },
+        {
+            "id": "level_5",
+            "title": "Very Hard (Data Structures/Pointers)",
+            "problem_description": "Given a pointer to the head of a Singly Linked List, write a function to insert a new node at the end.",
+            "reference_solution": {
+                "language": "C++",
+                "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    if (!head) return newNode;\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    temp->next = newNode;\n    return head;\n}\n"
+            },
+            "grading_rubric": {
+                "total_points": 25,
+                "criteria": [
+                    {
+                        "name": "Memory Allocation",
+                        "points": 5,
+                        "description": "Uses new to create a node."
+                    },
+                    {
+                        "name": "Traversal",
+                        "points": 10,
+                        "description": "Uses a while loop to find the end correctly."
+                    },
+                    {
+                        "name": "Null Head Case",
+                        "points": 10,
+                        "description": "Handles the case where the list is empty (head is null)."
+                    }
+                ]
+            },
+            "sample_answers": [
+                {
+                    "id": "sample_a",
+                    "label": "Correct",
+                    "score": 25,
+                    "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    if (!head) return newNode;\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    temp->next = newNode;\n    return head;\n}\n",
+                    "notes": "Allocates a new node, handles empty list, and appends at the end."
+                },
+                {
+                    "id": "sample_b",
+                    "label": "Partial",
+                    "score": 15,
+                    "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    temp->next = newNode;\n    return head;\n}\n",
+                    "notes": "Appends correctly but forgets to handle the null head case."
+                },
+                {
+                    "id": "sample_c",
+                    "label": "Incorrect",
+                    "score": 8,
+                    "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    if (!head) return newNode;\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    return head;\n}\n",
+                    "notes": "Traverses the list but never links the new node."
+                }
+            ]
+        }
+    ]
+}
