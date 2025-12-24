@@ -1,264 +1,252 @@
 {
+    "benchmark_metadata": {
+        "version": "2.7",
+        "total_levels": 5,
+        "points_per_level": 20,
+        "total_exam_points": 100,
+        "grading_rule": "If multiple deductions share the same exclusivity_group, only apply the deduction with the highest value."
+    },
     "levels": [
         {
-            "id": "level_1",
-            "title": "Very Easy (Basic Arithmetic & I/O)",
-            "problem_description": "Write a C++ program that asks the user for two integers and prints their sum.",
-            "reference_solution": {
-                "language": "C++",
-                "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a + b;\n    return 0;\n}\n"
-            },
+            "id": "L1_VERY_EASY",
+            "title": "Basic Arithmetic (Temperature)",
+            "total_points": 20,
+            "problem_description": "Write a function 'float toFahrenheit(float celsius)' that converts Celsius to Fahrenheit using the formula: (Celsius * 9/5) + 32.",
+            "explicit_instructions": ["Function name: 'toFahrenheit'", "Return type: float"],
+            "test_cases": [
+                {"input": "0", "expected_output": "32.0", "description": "Freezing point"},
+                {"input": "100", "expected_output": "212.0", "description": "Boiling point"},
+                {"input": "37.5", "expected_output": "99.5", "description": "Decimal precision check"}
+            ],
+            "reference_solution": "float toFahrenheit(float celsius) { return (celsius * 9.0 / 5.0) + 32.0; }",
             "grading_rubric": {
-                "total_points": 10,
-                "criteria": [
-                    {
-                        "name": "Correctness",
-                        "points": 5,
-                        "description": "Does it actually add two numbers and print the result?"
-                    },
-                    {
-                        "name": "Input Handling",
-                        "points": 3,
-                        "description": "Does it use cin correctly to get two variables?"
-                    },
-                    {
-                        "name": "Syntax",
-                        "points": 2,
-                        "description": "Does it include <iostream> and compile without errors?"
-                    }
+                "logic_points": 16,
+                "syntax_points": 4,
+                "hidden_deductions": [
+                    {"condition": "Used integer division (9/5)", "deduct": 5, "exclusivity_group": "formula_error"},
+                    {"condition": "Wrong formula logic", "deduct": 14, "exclusivity_group": "formula_error"},
+                    {"condition": "Incorrect return type", "deduct": 2, "exclusivity_group": "syntax_error"},
+                    {"condition": "Missing parentheses", "deduct": 3, "logic": "Implicit: May alter calculation result.","exclusivity_group": "formula_error"}
                 ]
             },
             "sample_answers": [
                 {
-                    "id": "sample_a",
-                    "label": "Correct",
-                    "score": 10,
-                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a + b;\n    return 0;\n}\n",
-                    "notes": "Standard code similar to reference."
-                },
-                {
-                    "id": "sample_b",
-                    "label": "Logic Error",
-                    "score": 5,
-                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a * b;\n    return 0;\n}\n",
-                    "notes": "Student uses cout << a * b; instead of +."
-                },
-                {
-                    "id": "sample_c",
-                    "label": "Syntax Error",
-                    "score": 2,
-                    "code": "using namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << a + b;\n    return 0;\n}\n",
-                    "notes": "Student forgets #include <iostream>."
-                }
-            ]
-        },
-        {
-            "id": "level_2",
-            "title": "Easy (Control Flow & Loops)",
-            "problem_description": "Write a program that takes an integer N and prints the factorial of N. (Example: If N=5, output 120).",
-            "reference_solution": {
-                "language": "C++",
-                "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    long long factorial = 1;\n    cin >> n;\n    if (n < 0) return 1;\n    for(int i = 1; i <= n; ++i) {\n        factorial *= i;\n    }\n    cout << factorial;\n    return 0;\n}\n"
-            },
-            "grading_rubric": {
-                "total_points": 20,
-                "criteria": [
-                    {
-                        "name": "Loop Logic",
-                        "points": 10,
-                        "description": "Correct use of a for or while loop to multiply numbers."
-                    },
-                    {
-                        "name": "Initialization",
-                        "points": 5,
-                        "description": "Does the factorial variable start at 1? (Starting at 0 is a common fail)."
-                    },
-                    {
-                        "name": "Edge Case",
-                        "points": 5,
-                        "description": "Does it handle 0! (which is 1) or negative numbers?"
-                    }
-                ]
-            },
-            "sample_answers": [
-                {
-                    "id": "sample_a",
-                    "label": "Correct",
-                    "score": 20,
-                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    long long factorial = 1;\n    cin >> n;\n    if (n < 0) return 1;\n    for (int i = 1; i <= n; ++i) {\n        factorial *= i;\n    }\n    cout << factorial;\n    return 0;\n}\n",
-                    "notes": "Perfect loop and initialization."
-                },
-                {
-                    "id": "sample_b",
-                    "label": "Partial",
-                    "score": 12,
-                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    long long factorial = 1;\n    cin >> n;\n    for (int i = 0; i <= n; ++i) {\n        factorial *= i;\n    }\n    cout << factorial;\n    return 0;\n}\n",
-                    "notes": "Loop starts at 0, resulting in the answer always being 0."
-                },
-                {
-                    "id": "sample_c",
-                    "label": "Incorrect",
-                    "score": 5,
-                    "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    for (int i = 1; i <= n; ++i) {\n        cout << i << \" \";\n    }\n    return 0;\n}\n",
-                    "notes": "Prints numbers from 1 to N but doesn't multiply them."
-                }
-            ]
-        },
-        {
-            "id": "level_3",
-            "title": "Medium (Arrays & Strings)",
-            "problem_description": "Write a function bool isPalindrome(string s) that returns true if a string reads the same forward and backward.",
-            "reference_solution": {
-                "language": "C++",
-                "code": "#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    string rev = s;\n    reverse(rev.begin(), rev.end());\n    return s == rev;\n}\n"
-            },
-            "grading_rubric": {
-                "total_points": 20,
-                "criteria": [
-                    {
-                        "name": "Algorithm",
-                        "points": 10,
-                        "description": "Correctly compares characters from front and back."
-                    },
-                    {
-                        "name": "String Handling",
-                        "points": 5,
-                        "description": "Uses string library correctly."
-                    },
-                    {
-                        "name": "Efficiency",
-                        "points": 5,
-                        "description": "Does it avoid unnecessary extra loops?"
-                    }
-                ]
-            },
-            "sample_answers": [
-                {
-                    "id": "sample_a",
-                    "label": "Correct",
-                    "score": 20,
-                    "code": "#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    string rev = s;\n    reverse(rev.begin(), rev.end());\n    return s == rev;\n}\n",
-                    "notes": "Correctly reverses the string and compares."
-                },
-                {
-                    "id": "sample_b",
-                    "label": "Logic Error",
-                    "score": 10,
-                    "code": "#include <string>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    if (s.empty()) return true;\n    return s.front() == s.back();\n}\n",
-                    "notes": "Only checks the first and last letters."
-                },
-                {
-                    "id": "sample_c",
-                    "label": "Syntax Error",
-                    "score": 0,
-                    "code": "bool isPalindrome(char s[]) {\n    int n = s.length();\n    return true;\n}\n",
-                    "notes": "Code uses char[] incorrectly and doesn't compile."
-                }
-            ]
-        },
-        {
-            "id": "level_4",
-            "title": "Hard (Recursion)",
-            "problem_description": "Write a recursive function to find the Nth Fibonacci number.",
-            "reference_solution": {
-                "language": "C++",
-                "code": "int fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n"
-            },
-            "grading_rubric": {
-                "total_points": 25,
-                "criteria": [
-                    {
-                        "name": "Base Case",
-                        "points": 10,
-                        "description": "Checks for n <= 1 or n == 0, n == 1."
-                    },
-                    {
-                        "name": "Recursive Step",
-                        "points": 10,
-                        "description": "Calls the function twice and adds the results."
-                    },
-                    {
-                        "name": "Function Signature",
-                        "points": 5,
-                        "description": "Correct return types and parameters."
-                    }
-                ]
-            },
-            "sample_answers": [
-                {
-                    "id": "sample_a",
-                    "label": "Correct",
-                    "score": 25,
-                    "code": "int fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n",
-                    "notes": "Uses recursion with proper base cases."
-                },
-                {
-                    "id": "sample_b",
-                    "label": "Logic Error",
-                    "score": 12,
-                    "code": "int fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 1);\n}\n",
-                    "notes": "Calls fibonacci(n - 1) twice instead of n - 1 and n - 2."
-                },
-                {
-                    "id": "sample_c",
-                    "label": "Syntax Error",
-                    "score": 5,
-                    "code": "fibonacci(int n) {\n    if (n <= 1) return n;\n    return fibonacci(n - 1) + fibonacci(n - 2);\n}\n",
-                    "notes": "Missing function return type or has mismatched braces."
-                }
-            ]
-        },
-        {
-            "id": "level_5",
-            "title": "Very Hard (Data Structures/Pointers)",
-            "problem_description": "Given a pointer to the head of a Singly Linked List, write a function to insert a new node at the end.",
-            "reference_solution": {
-                "language": "C++",
-                "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    if (!head) return newNode;\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    temp->next = newNode;\n    return head;\n}\n"
-            },
-            "grading_rubric": {
-                "total_points": 25,
-                "criteria": [
-                    {
-                        "name": "Memory Allocation",
-                        "points": 5,
-                        "description": "Uses new to create a node."
-                    },
-                    {
-                        "name": "Traversal",
-                        "points": 10,
-                        "description": "Uses a while loop to find the end correctly."
-                    },
-                    {
-                        "name": "Null Head Case",
-                        "points": 10,
-                        "description": "Handles the case where the list is empty (head is null)."
-                    }
-                ]
-            },
-            "sample_answers": [
-                {
-                    "id": "sample_a",
-                    "label": "Correct",
-                    "score": 25,
-                    "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    if (!head) return newNode;\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    temp->next = newNode;\n    return head;\n}\n",
-                    "notes": "Allocates a new node, handles empty list, and appends at the end."
-                },
-                {
-                    "id": "sample_b",
-                    "label": "Partial",
+                    "id": "L1_S1",
+                    "label": "Integer Trap",
                     "score": 15,
-                    "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    temp->next = newNode;\n    return head;\n}\n",
-                    "notes": "Appends correctly but forgets to handle the null head case."
+                    "code": "float toFahrenheit(float c) { return (c * (9/5)) + 32; }",
+                    "human_rationale": "15/20. Good structure, but 9/5 evaluates to 1. Deducted 5 logic points."
                 },
                 {
-                    "id": "sample_c",
-                    "label": "Incorrect",
+                    "id": "L1_S2",
+                    "label": "Wrong Formula",
+                    "score": 6,
+                    "code": "float toFahrenheit(float c) { return (c * 5/9) + 32; }",
+                    "human_rationale": "6/20. Used wrong formula, resulting in incorrect conversions."
+                },
+                {
+                    "id": "L1_S3",
+                    "label": "Wrong Return Type",
+                    "score": 18,
+                    "code": "int toFahrenheit(float c) { return (c * 9.0 / 5.0) + 32.0; }",
+                    "human_rationale": "18/20. Correct logic but wrong return type."
+                },
+               {
+                    "id": "L1_S4",
+                    "label": "Missing Parentheses",
+                    "score": 17,
+                   "code": "float toFahrenheit(float c) { return c * 9.0 / 5.0 + 32.0; }",
+                   "human_rationale": "17/20. Correct math, but parentheses missing, may confuse readers. Deducted 3 points."
+               }
+            ]
+        },
+        {
+            "id": "L2_EASY",
+            "title": "Looping Logic (Factorial)",
+            "total_points": 20,
+            "problem_description": "Write a program that takes an integer N and prints the factorial of N.",
+            "explicit_instructions": ["Use cin and cout"],
+            "test_cases": [
+                {"input": "5", "expected_output": "120", "description": "Standard factorial"},
+                {"input": "0", "expected_output": "1", "description": "Edge case: 0!"},
+                {"input": "13", "expected_output": "6227020800", "description": "Overflow check (requires long long)"}
+            ],
+            "reference_solution": "#include <iostream>\nusing namespace std;\nint main() {\n    int n; if (!(cin >> n) || n < 0) return 0;\n    long long fact = 1;\n    for(int i = 1; i <= n; i++) fact *= i;\n    cout << fact; return 0;\n}",
+            "grading_rubric": {
+                "logic_points": 16,
+                "syntax_points": 4,
+                "hidden_deductions": [
+                    {"condition": "Used 'int' instead of 'long long'", "deduct": 2, "exclusivity_group": "data_type"},
+                    {"condition": "Fails N=0 (result should be 1)", "deduct": 4, "exclusivity_group": "edge_case"},
+                    {"condition": "Starts factorial at 0", "deduct": 12, "exclusivity_group": "math_logic"},
+                    {"condition": "Loop starts from 0", "deduct": 12, "exclusivity_group": "math_logic"},
+                    {"condition": "Loop condition incorrect (i < n)", "deduct": 4, "exclusivity_group": "loop_bounds"},
+                    {"condition": "Prints result inside loop", "deduct": 3, "exclusivity_group": "io_format"},
+                    {"condition": "Negative input not handled", "deduct": 1, "exclusivity_group": "validation"},
+                    {"condition": "Fails to read input using cin", "deduct": 16, "exclusivity_group": "io_logic"}
+                ]
+            },
+            "sample_answers": [
+                 {
+                   "id": "L2_S1",
+                   "label": "Perfect Solution",
+                   "score": 20,
+                   "code": "#include <iostream>\nusing namespace std;\nint main() {\n    int n; cin >> n;\n    long long fact = 1;\n    for(int i = 1; i <= n; i++) fact *= i;\n    cout << fact;\n    return 0;\n}",
+                   "human_rationale": "20/20. Perfect implementation."
+               },
+                {
+                    "id": "L2_S2",
+                    "label": "Starts Factorial at 0",
                     "score": 8,
-                    "code": "struct Node { int data; Node* next; };\n\nNode* insertEnd(Node* head, int value) {\n    Node* newNode = new Node{value, nullptr};\n    if (!head) return newNode;\n    Node* temp = head;\n    while (temp->next) temp = temp->next;\n    return head;\n}\n",
-                    "notes": "Traverses the list but never links the new node."
+                    "code": "#include <iostream>\nusing namespace std;\nint main() {\n    int n; cin >> n; long long fact = 0; for(int i = 1; i <= n; i++) fact *= i; cout << fact; return 0;\n}",
+                    "human_rationale": "8/20. Syntax is fine, but result is always 0. Major logic failure."
+                },
+               {
+                   "id": "L2_S3",
+                   "label": "Loop off-by-one",
+                   "score": 16,
+                   "code": "#include <iostream>\nusing namespace std;\nint main() { int n; cin >> n; long long fact = 1; for(int i=1;i<n;i++) fact*=i; cout<<fact; return 0; }",
+                   "human_rationale": "16/20. Misses last multiplication (i<n). Deducted 4 points for logic."
+                }
+
+            ]
+        },
+        {
+            "id": "L3_MEDIUM",
+            "title": "String Manipulation (Palindrome)",
+            "total_points": 20,
+            "problem_description": "Write a function 'bool isPalindrome(string s)' (Case-sensitive).",
+            "explicit_instructions": ["Case-sensitive", "Empty string = true"],
+            "test_cases": [
+                {"input": "\"racecar\"", "expected_output": "true", "description": "Standard palindrome"},
+                {"input": "\"Racecar\"", "expected_output": "false", "description": "Case-sensitivity check"},
+                {"input": "\"\"", "expected_output": "true", "description": "Empty string check"}
+            ],
+            "reference_solution": "#include <string>\n#include <algorithm>\nusing namespace std;\nbool isPalindrome(string s) {\n    if (s.empty()) return true;\n    string r = s; reverse(r.begin(), r.end());\n    return s == r;\n}",
+            "grading_rubric": {
+                "logic_points": 16,
+                "syntax_points": 4,
+                "hidden_deductions": [
+                    {"condition": "Logic fails on odd-length strings", "deduct": 8, "exclusivity_group": "algorithm"},
+                    {"condition": "Made it case-insensitive", "deduct": 4, "exclusivity_group": "instruction_violation"},
+                    {"condition": "Does not handle empty string", "deduct": 3, "exclusivity_group": "edge_case"},
+                    {"condition": "Off-by-one error in loop bounds", "deduct": 4, "exclusivity_group": "algorithm"},
+                    {"condition": "Always returns false", "deduct": 16, "exclusivity_group": "algorithm"},
+                    {"condition": "Wrong return type", "deduct": 2, "exclusivity_group": "syntax_error"}
+                ]
+            },
+            "sample_answers": [
+                {
+                    "id": "L3_S2",
+                    "label": "Off-by-One Error",
+                    "score": 16,
+                    "code": "bool isPalindrome(string s) { ... }",
+                    "human_rationale": "16/20. Logic is mostly correct, but the loop goes one step too far."
                 }
             ]
+        },
+        {
+            "id": "L4_HARD",
+            "title": "Recursion (Fibonacci)",
+            "total_points": 20,
+            "problem_description": "Write a recursive function 'int fib(int n)'.",
+            "explicit_instructions": ["Must use recursion", "No loops"],
+            "test_cases": [
+                {"input": "0", "expected_output": "0", "description": "Base case 1"},
+                {"input": "1", "expected_output": "1", "description": "Base case 2"},
+                {"input": "6", "expected_output": "8", "description": "Standard recursive step"}
+            ],
+            "reference_solution": "int fib(int n) {\n    if (n <= 0) return 0;\n    if (n == 1) return 1;\n    return fib(n-1) + fib(n-2);\n}",
+            "grading_rubric": {
+                "logic_points": 16,
+                "syntax_points": 4,
+                "hidden_deductions": [
+                    {"condition": "Missing base cases", "deduct": 12, "exclusivity_group": "recursion_logic"},
+                    {"condition": "Used iterative loop", "deduct": 10, "exclusivity_group": "instruction_violation"},
+                    {"condition": "Incorrect recursive relation", "deduct": 14, "exclusivity_group": "recursion_logic"},
+                    {"condition": "Wrong return type", "deduct": 2, "exclusivity_group": "syntax_error"}
+                ]
+            },
+            "sample_answers": [
+    {
+        "id": "L4_S1",
+        "label": "Missing Base Case Trap",
+        "score": 8,
+        "code": "int fib(int n) {\n    return fib(n-1) + fib(n-2);\n}",
+        "human_rationale": "8/20. Logic score: 16 - 12 (Base Case) = 4. Syntax: 4. Total: 8. The formula is correct, but it will cause a Stack Overflow crash because it never stops."
+    },
+    {
+        "id": "L4_S2",
+        "label": "Perfect Recursive Solution",
+        "score": 20,
+        "code": "int fib(int n) {\n    if (n <= 0) return 0;\n    if (n == 1) return 1;\n    return fib(n-1) + fib(n-2);\n}",
+        "human_rationale": "20/20. Correct logic, handles base cases, and uses recursion as requested."
+    },
+    {
+        "id": "L4_S3",
+        "label": "Iterative Violation",
+        "score": 10,
+        "code": "int fib(int n) {\n    int a = 0, b = 1, c;\n    if(n==0) return 0;\n    for(int i=2; i<=n; i++) {\n        c = a + b; a = b; b = c;\n    }\n    return b;\n}",
+        "human_rationale": "10/20. The math is 100% correct, but the student was strictly told 'No loops'. Logic: 16 - 10 (Instruction Violation) = 6. Syntax: 4. Total: 10."
+    },
+    {
+        "id": "L4_S4",
+        "label": "Formula Error",
+        "score": 6,
+        "code": "int fib(int n) {\n    if (n <= 1) return n;\n    return fib(n-1) + fib(n-1);\n}",
+        "human_rationale": "6/20. Syntax is fine. Base cases are fine. However, adding (n-1) to (n-1) is not the Fibonacci sequence. Logic: 16 - 14 (Incorrect Relation) = 2. Syntax: 4. Total: 6."
+    }
+]
+          
+        },
+        {
+            "id": "L5_VERY_HARD",
+            "title": "Memory Safety (Linked List)",
+            "total_points": 20,
+            "problem_description": "Write a function 'Node* insertEnd(Node* head, int value)' to append a node.",
+            "explicit_instructions": ["Return new head", "Use dynamic memory (new)"],
+            "test_cases": [
+                {"input": "head=NULL, val=10", "expected_output": "New node with 10", "description": "Empty list handling"},
+                {"input": "head=[5], val=15", "expected_output": "[5, 15]", "description": "Existing list append"}
+            ],
+            "reference_solution": "struct Node { int data; Node* next; };\nNode* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; while(t->next) t = t->next;\n    t->next = nn; return head;\n}",
+            "grading_rubric": {
+                "logic_points": 16,
+                "syntax_points": 4,
+                "hidden_deductions": [
+                    {"condition": "Crash when head is NULL", "deduct": 6, "exclusivity_group": "safety"},
+                    {"condition": "Memory allocation failure", "deduct": 16, "exclusivity_group": "allocation"},
+                    {"condition": "Does not return new head", "deduct": 5, "exclusivity_group": "signature"},
+                    {"condition": "Fails to use 'new' for node creation", "deduct": 12, "exclusivity_group": "allocation"},
+                    {"condition": "Memory leak/Lost pointer", "deduct": 6, "exclusivity_group": "safety"},
+                    {"condition": "Infinite loop", "deduct": 14, "exclusivity_group": "safety"}
+                ]
+            },
+            "sample_answers": [
+    {
+        "id": "L5_S1",
+        "label": "Null Head Crash Trap",
+        "score": 14,
+        "code": "Node* insertEnd(Node* head, int v) {\n    Node* temp = head;\n    while(temp->next != nullptr) temp = temp->next;\n    temp->next = new Node(v);\n    return head;\n}",
+        "human_rationale": "14/20. Logic works for existing lists. However, it crashes if the list is empty because it doesn't check 'if(!head)'. Logic: 16 - 6 (Safety) = 10. Syntax: 4. Total: 14."
+    },
+    {
+        "id": "L5_S2",
+        "label": "Perfect Solution",
+        "score": 20,
+        "code": "Node* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; \n    while(t->next) t = t->next;\n    t->next = nn; \n    return head;\n}",
+        "human_rationale": "20/20. Correct allocation, safe for empty lists, and correct traversal."
+    },
+    {
+        "id": "L5_S3",
+        "label": "Wrong Return Contract",
+        "score": 15,
+        "code": "Node* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; while(t->next) t = t->next;\n    t->next = nn;\n    return nn; // Error: Returns the end, not the head\n}",
+        "human_rationale": "15/20. Implementation is good, but it returns the new node instead of the head of the list. Logic: 16 - 5 (Signature) = 11. Syntax: 4. Total: 15."
+    }
+]
+            
         }
     ]
 }
+
