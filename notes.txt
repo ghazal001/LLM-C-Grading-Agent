@@ -4,3 +4,11 @@ The reference_solution is a logical guide. If the student uses a different appro
 or different variable names) but the result and logic are correct according to the rubric, do not deduct points. 
 Only deduct points if there is a functional error or a violation of the explicit_instructions."
 
+
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+# Install libraries
+pip install -r requirements.txt

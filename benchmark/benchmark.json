@@ -4,7 +4,7 @@
         "total_levels": 5,
         "points_per_level": 20,
         "total_exam_points": 100,
-        "grading_rule": "If multiple deductions share the same exclusivity_group, only apply the deduction with the highest value."
+        "grading_rule": "If multiple deductions share the same exclusivity_group, only apply the deduction with the highest value. Logic Score = Max(0, 16 - deductions). Syntax Score = Max(0, 4 - deductions)."
     },
     "levels": [
         {
@@ -25,8 +25,7 @@
                 "hidden_deductions": [
                     {"condition": "Used integer division (9/5)", "deduct": 5, "exclusivity_group": "formula_error"},
                     {"condition": "Wrong formula logic", "deduct": 14, "exclusivity_group": "formula_error"},
-                    {"condition": "Incorrect return type", "deduct": 2, "exclusivity_group": "syntax_error"},
-                    {"condition": "Missing parentheses", "deduct": 3, "logic": "Implicit: May alter calculation result.","exclusivity_group": "formula_error"}
+                    {"condition": "Incorrect return type", "deduct": 2, "exclusivity_group": "syntax_error"}
                 ]
             },
             "sample_answers": [
@@ -50,14 +49,7 @@
                     "score": 18,
                     "code": "int toFahrenheit(float c) { return (c * 9.0 / 5.0) + 32.0; }",
                     "human_rationale": "18/20. Correct logic but wrong return type."
-                },
-               {
-                    "id": "L1_S4",
-                    "label": "Missing Parentheses",
-                    "score": 17,
-                   "code": "float toFahrenheit(float c) { return c * 9.0 / 5.0 + 32.0; }",
-                   "human_rationale": "17/20. Correct math, but parentheses missing, may confuse readers. Deducted 3 points."
-               }
+                }
             ]
         },
         {
@@ -89,10 +81,10 @@
             "sample_answers": [
                  {
                    "id": "L2_S1",
-                   "label": "Perfect Solution",
-                   "score": 20,
+                   "label": "Negative input not handled",
+                   "score": 19,
                    "code": "#include <iostream>\nusing namespace std;\nint main() {\n    int n; cin >> n;\n    long long fact = 1;\n    for(int i = 1; i <= n; i++) fact *= i;\n    cout << fact;\n    return 0;\n}",
-                   "human_rationale": "20/20. Perfect implementation."
+                   "human_rationale": "19/20. Negative input not handled."
                },
                 {
                     "id": "L2_S2",
@@ -140,7 +132,7 @@
                     "id": "L3_S2",
                     "label": "Off-by-One Error",
                     "score": 16,
-                    "code": "bool isPalindrome(string s) { ... }",
+                    "code": "bool isPalindrome(string s) {\n    int n = s.size();\n    for(int i = 0; i <= n/2; i++) {\n        if(s[i] != s[n - i - 1]) return false;\n    }\n    return true;\n}",
                     "human_rationale": "16/20. Logic is mostly correct, but the loop goes one step too far."
                 }
             ]
@@ -161,9 +153,9 @@
                 "logic_points": 16,
                 "syntax_points": 4,
                 "hidden_deductions": [
-                    {"condition": "Missing base cases", "deduct": 12, "exclusivity_group": "recursion_logic"},
-                    {"condition": "Used iterative loop", "deduct": 10, "exclusivity_group": "instruction_violation"},
-                    {"condition": "Incorrect recursive relation", "deduct": 14, "exclusivity_group": "recursion_logic"},
+                    {"condition": "Missing base cases", "deduct": 10, "exclusivity_group": "instruction_violation"},
+                    {"condition": "Used iterative loop", "deduct": 12, "exclusivity_group": "instruction_violation"},
+                    {"condition": "Incorrect recursive relation", "deduct": 10, "exclusivity_group": "instruction_violation"},
                     {"condition": "Wrong return type", "deduct": 2, "exclusivity_group": "syntax_error"}
                 ]
             },
