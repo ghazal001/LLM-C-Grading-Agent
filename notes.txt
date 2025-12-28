@@ -12,3 +12,38 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
 # Install libraries
 pip install -r requirements.txt
+
+
+
+
+
+
+
+1. The Power of "Logic Alignment"
+In your first run, your human scores were a bit "subjective" (based on your feeling). In the second run, you updated the human scores to strictly follow the rubric's math (e.g., Logic 16 - 12 = 4).
+Why this helped the AI: LLMs are essentially math and logic engines. When the human scores were "subjective," the AI was guessing. When the human scores became "mathematical," the AI could use the rubric you provided to calculate the exact same number you did.
+Result: The AI "logic" now perfectly matches your "human logic."
+2. Why Voting_Median reached 0.00 (The "Outlier" Effect)
+This is the most important technical part of your project. Median Voting is designed to ignore "hallucinations."
+Scenario: Imagine for one C++ problem:
+CoT says the score is 10.
+Few-Shot says the score is 10.
+Evaluator-Optimizer makes a mistake (hallucinates) and says 15.
+The Mean (Average): (10+10+15) / 3 = 11.6 (Error of 1.6).
+The Median (Middle): The middle value of [10, 10, 15] is 10.
+Result: By using the Median, your system automatically ignored the one model that was wrong and picked the two that were right. Because you made your human scores very logical, at least two of your models were able to hit the "bullseye" every time.
+3. Why Evaluator-Optimizer is the "Loser" (2.00 error)
+You might be surprised that the "smartest" method (Evaluator-Optimizer) has the highest error.
+Explanation: The Evaluator-Optimizer tries to "over-think." Sometimes, the first grader gets the score 100% correct, but the "Critic" agent feels like it has to find a mistake, so it forces a change to the score.
+Result: This "over-thinking" creates a bigger gap (error) between the AI and the Human compared to the simpler methods.
+4. Why Few-Shot CoT improved (1.00 → 0.33)
+Few-Shot uses examples to understand the "strictness" of the teacher.
+Before: Your examples and your human scores weren't perfectly aligned, so the AI was slightly confused about how strict to be.
+After: Now that your benchmark is mathematically consistent, the Few-Shot model can see the pattern perfectly. It is now almost as accurate as the human.
+
+
+
+This is actually a great "Challenge encountered" for your report!
+"During testing, we encountered API Rate Limiting. The Few-Shot and Evaluator-Optimizer workflows are token-heavy,
+ which caused the API to reject requests during repeated stress tests. We solved this by implementing a request cooldown 
+ (throttling) to ensure all agents had time to respond without hitting provider limits."

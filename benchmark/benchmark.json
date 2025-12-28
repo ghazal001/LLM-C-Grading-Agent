@@ -1,6 +1,6 @@
 {
     "benchmark_metadata": {
-        "version": "2.7",
+        "version": "2.8",
         "total_levels": 5,
         "points_per_level": 20,
         "total_exam_points": 100,
@@ -32,23 +32,23 @@
                 {
                     "id": "L1_S1",
                     "label": "Integer Trap",
-                    "score": 15,
+                    "human_score": 15,
                     "code": "float toFahrenheit(float c) { return (c * (9/5)) + 32; }",
-                    "human_rationale": "15/20. Good structure, but 9/5 evaluates to 1. Deducted 5 logic points."
+                    "human_rationale": "Logic: 16 - 5 (integer division) = 11. Syntax: 4. Total: 15. The code is structurally perfect but fails math due to 9/5 evaluating to 1."
                 },
                 {
                     "id": "L1_S2",
                     "label": "Wrong Formula",
-                    "score": 6,
+                    "human_score": 6,
                     "code": "float toFahrenheit(float c) { return (c * 5/9) + 32; }",
-                    "human_rationale": "6/20. Used wrong formula, resulting in incorrect conversions."
+                    "human_rationale": "Logic: 16 - 14 (wrong formula) = 2. Syntax: 4. Total: 6. The student swapped the formula ratio."
                 },
                 {
                     "id": "L1_S3",
                     "label": "Wrong Return Type",
-                    "score": 18,
+                    "human_score": 18,
                     "code": "int toFahrenheit(float c) { return (c * 9.0 / 5.0) + 32.0; }",
-                    "human_rationale": "18/20. Correct logic but wrong return type."
+                    "human_rationale": "Logic: 16. Syntax: 4 - 2 (incorrect return type) = 2. Total: 18."
                 }
             ]
         },
@@ -82,25 +82,24 @@
                  {
                    "id": "L2_S1",
                    "label": "Negative input not handled",
-                   "score": 19,
+                   "human_score": 19,
                    "code": "#include <iostream>\nusing namespace std;\nint main() {\n    int n; cin >> n;\n    long long fact = 1;\n    for(int i = 1; i <= n; i++) fact *= i;\n    cout << fact;\n    return 0;\n}",
-                   "human_rationale": "19/20. Negative input not handled."
+                   "human_rationale": "Logic: 16 - 1 (validation) = 15. Syntax: 4. Total: 19. Code works for all positive cases but doesn't handle negative inputs."
                },
                 {
                     "id": "L2_S2",
                     "label": "Starts Factorial at 0",
-                    "score": 8,
+                    "human_score": 8,
                     "code": "#include <iostream>\nusing namespace std;\nint main() {\n    int n; cin >> n; long long fact = 0; for(int i = 1; i <= n; i++) fact *= i; cout << fact; return 0;\n}",
-                    "human_rationale": "8/20. Syntax is fine, but result is always 0. Major logic failure."
+                    "human_rationale": "Logic: 16 - 12 (math_logic) = 4. Syntax: 4. Total: 8. Initialization to 0 makes the result always 0."
                 },
                {
                    "id": "L2_S3",
                    "label": "Loop off-by-one",
-                   "score": 16,
+                   "human_score": 16,
                    "code": "#include <iostream>\nusing namespace std;\nint main() { int n; cin >> n; long long fact = 1; for(int i=1;i<n;i++) fact*=i; cout<<fact; return 0; }",
-                   "human_rationale": "16/20. Misses last multiplication (i<n). Deducted 4 points for logic."
+                   "human_rationale": "Logic: 16 - 4 (loop_bounds) = 12. Syntax: 4. Total: 16. Using 'i < n' instead of 'i <= n' misses the last multiplication."
                 }
-
             ]
         },
         {
@@ -131,9 +130,9 @@
                 {
                     "id": "L3_S2",
                     "label": "Off-by-One Error",
-                    "score": 16,
+                    "human_score": 16,
                     "code": "bool isPalindrome(string s) {\n    int n = s.size();\n    for(int i = 0; i <= n/2; i++) {\n        if(s[i] != s[n - i - 1]) return false;\n    }\n    return true;\n}",
-                    "human_rationale": "16/20. Logic is mostly correct, but the loop goes one step too far."
+                    "human_rationale": "Logic: 16 - 4 (algorithm/off-by-one) = 12. Syntax: 4. Total: 16. The comparison 'i <= n/2' is slightly inefficient/wrong on the middle character comparison."
                 }
             ]
         },
@@ -160,36 +159,35 @@
                 ]
             },
             "sample_answers": [
-    {
-        "id": "L4_S1",
-        "label": "Missing Base Case Trap",
-        "score": 8,
-        "code": "int fib(int n) {\n    return fib(n-1) + fib(n-2);\n}",
-        "human_rationale": "8/20. Logic score: 16 - 12 (Base Case) = 4. Syntax: 4. Total: 8. The formula is correct, but it will cause a Stack Overflow crash because it never stops."
-    },
-    {
-        "id": "L4_S2",
-        "label": "Perfect Recursive Solution",
-        "score": 20,
-        "code": "int fib(int n) {\n    if (n <= 0) return 0;\n    if (n == 1) return 1;\n    return fib(n-1) + fib(n-2);\n}",
-        "human_rationale": "20/20. Correct logic, handles base cases, and uses recursion as requested."
-    },
-    {
-        "id": "L4_S3",
-        "label": "Iterative Violation",
-        "score": 10,
-        "code": "int fib(int n) {\n    int a = 0, b = 1, c;\n    if(n==0) return 0;\n    for(int i=2; i<=n; i++) {\n        c = a + b; a = b; b = c;\n    }\n    return b;\n}",
-        "human_rationale": "10/20. The math is 100% correct, but the student was strictly told 'No loops'. Logic: 16 - 10 (Instruction Violation) = 6. Syntax: 4. Total: 10."
-    },
-    {
-        "id": "L4_S4",
-        "label": "Formula Error",
-        "score": 6,
-        "code": "int fib(int n) {\n    if (n <= 1) return n;\n    return fib(n-1) + fib(n-1);\n}",
-        "human_rationale": "6/20. Syntax is fine. Base cases are fine. However, adding (n-1) to (n-1) is not the Fibonacci sequence. Logic: 16 - 14 (Incorrect Relation) = 2. Syntax: 4. Total: 6."
-    }
-]
-          
+                {
+                    "id": "L4_S1",
+                    "label": "Missing Base Case Trap",
+                    "human_score": 10,
+                    "code": "int fib(int n) {\n    return fib(n-1) + fib(n-2);\n}",
+                    "human_rationale": "Logic: 16 - 10 (instruction_violation/missing base cases) = 6. Syntax: 4. Total: 10. Math logic is there, but implementation causes stack overflow."
+                },
+                {
+                    "id": "L4_S2",
+                    "label": "Perfect Recursive Solution",
+                    "human_score": 20,
+                    "code": "int fib(int n) {\n    if (n <= 0) return 0;\n    if (n == 1) return 1;\n    return fib(n-1) + fib(n-2);\n}",
+                    "human_rationale": "Logic: 16. Syntax: 4. Total: 20. Perfectly followed all recursive instructions."
+                },
+                {
+                    "id": "L4_S3",
+                    "label": "Iterative Violation",
+                    "human_score": 8,
+                    "code": "int fib(int n) {\n    int a = 0, b = 1, c;\n    if(n==0) return 0;\n    for(int i=2; i<=n; i++) {\n        c = a + b; a = b; b = c;\n    }\n    return b;\n}",
+                    "human_rationale": "Logic: 16 - 12 (instruction_violation/used loop) = 4. Syntax: 4. Total: 8. The math is correct, but failed the 'No loops' constraint."
+                },
+                {
+                    "id": "L4_S4",
+                    "label": "Formula Error",
+                    "human_score": 10,
+                    "code": "int fib(int n) {\n    if (n <= 1) return n;\n    return fib(n-1) + fib(n-1);\n}",
+                    "human_rationale": "Logic: 16 - 10 (instruction_violation/incorrect relation) = 6. Syntax: 4. Total: 10. Student used recursion but used the wrong mathematical formula."
+                }
+            ]
         },
         {
             "id": "L5_VERY_HARD",
@@ -215,30 +213,28 @@
                 ]
             },
             "sample_answers": [
-    {
-        "id": "L5_S1",
-        "label": "Null Head Crash Trap",
-        "score": 14,
-        "code": "Node* insertEnd(Node* head, int v) {\n    Node* temp = head;\n    while(temp->next != nullptr) temp = temp->next;\n    temp->next = new Node(v);\n    return head;\n}",
-        "human_rationale": "14/20. Logic works for existing lists. However, it crashes if the list is empty because it doesn't check 'if(!head)'. Logic: 16 - 6 (Safety) = 10. Syntax: 4. Total: 14."
-    },
-    {
-        "id": "L5_S2",
-        "label": "Perfect Solution",
-        "score": 20,
-        "code": "Node* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; \n    while(t->next) t = t->next;\n    t->next = nn; \n    return head;\n}",
-        "human_rationale": "20/20. Correct allocation, safe for empty lists, and correct traversal."
-    },
-    {
-        "id": "L5_S3",
-        "label": "Wrong Return Contract",
-        "score": 15,
-        "code": "Node* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; while(t->next) t = t->next;\n    t->next = nn;\n    return nn; // Error: Returns the end, not the head\n}",
-        "human_rationale": "15/20. Implementation is good, but it returns the new node instead of the head of the list. Logic: 16 - 5 (Signature) = 11. Syntax: 4. Total: 15."
-    }
-]
-            
+                {
+                    "id": "L5_S1",
+                    "label": "Null Head Crash Trap",
+                    "human_score": 14,
+                    "code": "Node* insertEnd(Node* head, int v) {\n    Node* temp = head;\n    while(temp->next != nullptr) temp = temp->next;\n    temp->next = new Node(v);\n    return head;\n}",
+                    "human_rationale": "Logic: 16 - 6 (safety/crash on null) = 10. Syntax: 4. Total: 14. Missing the empty list check causes a null pointer dereference."
+                },
+                {
+                    "id": "L5_S2",
+                    "label": "Perfect Solution",
+                    "human_score": 20,
+                    "code": "Node* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; \n    while(t->next) t = t->next;\n    t->next = nn; \n    return head;\n}",
+                    "human_rationale": "Logic: 16. Syntax: 4. Total: 20. Code is memory safe and correct."
+                },
+                {
+                    "id": "L5_S3",
+                    "label": "Wrong Return Contract",
+                    "human_score": 15,
+                    "code": "Node* insertEnd(Node* head, int val) {\n    Node* nn = new Node{val, nullptr};\n    if(!head) return nn;\n    Node* t = head; while(t->next) t = t->next;\n    t->next = nn;\n    return nn; \n}",
+                    "human_rationale": "Logic: 16 - 5 (signature/does not return head) = 11. Syntax: 4. Total: 15. The function correctly appends but returns the new node instead of the head."
+                }
+            ]
         }
     ]
 }
-

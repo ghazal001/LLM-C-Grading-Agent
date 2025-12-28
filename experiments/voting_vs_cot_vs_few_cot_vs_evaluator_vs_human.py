@@ -1,105 +1,130 @@
 import sys
 from pathlib import Path
 import json
+import statistics
+import time
 
-# --------------------------------------------------
-# Ensure project root is in PYTHONPATH
-# --------------------------------------------------
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
-# --------------------------------------------------
-# Imports
-# --------------------------------------------------
+
 from agent.cot_grader import CoTGrader
 from agent.few_cot_grader import FewShotCoTGrader
 from agent.evaluator_opt import EvaluatorOptimizer
 from agent.voting_grader import VotingGrader
 from utils.benchmark_loader import load_benchmark
 
-# --------------------------------------------------
-# Config
-# --------------------------------------------------
+
 BENCHMARK_PATH = "benchmark/benchmark.json"
-VOTING_STRATEGIES = ["mean", "median", "majority"]
+VOTING_STRATEGIES = ["mean", "median"]
 
 
-# --------------------------------------------------
-# Pretty printer
-# --------------------------------------------------
-def pretty(title, obj):
-    print(f"\n{title}")
-    print(json.dumps(obj, indent=2, ensure_ascii=False))
+# We will store the "Error" (Difference from Human) for every method
+performance_tracker = {
+    "CoT_ZeroShot": [],
+    "FewShot_CoT": [],
+    "Evaluator_Optimizer": [],
+    "Voting_Mean": [],
+    "Voting_Median": []
+}
 
-
-# --------------------------------------------------
-# Voting using cached results (NO LLM CALLS HERE)
-# --------------------------------------------------
-def run_voting_from_cached(results):
-    voting_outputs = {}
-
-    for strategy in VOTING_STRATEGIES:
-        voter = VotingGrader(strategy=strategy)
-        voting_outputs[strategy] = voter.aggregate(results)
-
-    return voting_outputs
-
+def calculate_error(ai_result, human_score):
+    """Safely extracts score and calculates absolute difference."""
+    try:
+        if isinstance(ai_result, dict) and "final_score" in ai_result:
+            ai_score = float(ai_result["final_score"])
+            return abs(ai_score - human_score)
+    except:
+        pass
+    return None
 
 # --------------------------------------------------
-# Run one benchmark case
+# Main Experiment Runner
 # --------------------------------------------------
-def run_case(level_id, sample_id):
+def run_full_evaluation():
+    print("🚀 Starting Full Benchmark Evaluation...")
     benchmark = load_benchmark(BENCHMARK_PATH)
-    level = next(l for l in benchmark["levels"] if l["id"] == level_id)
-    sample = next(s for s in level["sample_answers"] if s["id"] == sample_id)
-
-    student_code = sample["code"]
-
-    print("\n" + "=" * 80)
-    print(f"LEVEL: {level_id}")
-    print(f"SAMPLE: {sample_id} — {sample['label']}")
-    print("=" * 80)
-
-    # --------------------------------------------------
-    # Initialize graders
-    # --------------------------------------------------
+    
+    # Initialize Graders
     cot = CoTGrader()
     fewshot = FewShotCoTGrader()
     evaluator = EvaluatorOptimizer()
 
-    # --------------------------------------------------
-    # Run graders ONCE
-    # --------------------------------------------------
-    cot_result = cot.grade(level, student_code)
-    fewshot_result = fewshot.grade(level, student_code)
-    evaluator_result = evaluator.grade(level, student_code)
+    total_samples = 0
 
-    # Collect only valid grading outputs for voting
-    voting_inputs = [
-        r for r in [cot_result, fewshot_result]
-        if isinstance(r, dict) and "final_score" in r
-    ]
+    # Loop through every Difficulty Level
+    for level in benchmark["levels"]:
+        print(f"\n--- Testing Level: {level['id']} ---")
+        
+        # Loop through every Student Sample in that level
+        for sample in level["sample_answers"]:
+            total_samples += 1
+            student_code = sample["code"]
+            human_score = float(sample["human_score"])
+            
+            print(f"  > Processing Sample: {sample['id']}...", end="\r")
 
-    voting_results = run_voting_from_cached(voting_inputs)
+            # 1. Get AI Scores
+            res_cot = cot.grade(level, student_code)
+            time.sleep(1)
+            res_fewshot = fewshot.grade(level, student_code)
+            time.sleep(1)
+            res_eval = evaluator.grade(level, student_code)
+            
 
-    # --------------------------------------------------
-    # Print results
-    # --------------------------------------------------
-    pretty("🧑‍🏫 CoT Grader (Zero-Shot)", cot_result)
-    pretty("🧠 Few-Shot CoT Grader", fewshot_result)
-    pretty("👨‍🏫 Evaluator (Sequential)", evaluator_result)
+            # 2. Collect for Voting (include all 3 brain types)
+            voting_inputs = [
+                r for r in [res_cot, res_fewshot, res_eval]
+                if isinstance(r, dict) and "final_score" in r
+            ]
 
-    for strategy, result in voting_results.items():
-        pretty(f"🗳️ Voting Grader ({strategy.upper()})", result)
+            # 3. Calculate Voting
+            mean_voter = VotingGrader(strategy="mean")
+            median_voter = VotingGrader(strategy="median")
+            
+            res_vote_mean = mean_voter.aggregate(voting_inputs)
+            res_vote_median = median_voter.aggregate(voting_inputs)
 
-    print("\n📌 HUMAN RATIONALE:")
-    print(sample["human_rationale"])
+            # 4. Calculate and Store Errors (Absolute Difference)
+            performance_tracker["CoT_ZeroShot"].append(calculate_error(res_cot, human_score))
+            performance_tracker["FewShot_CoT"].append(calculate_error(res_fewshot, human_score))
+            performance_tracker["Evaluator_Optimizer"].append(calculate_error(res_eval, human_score))
+            performance_tracker["Voting_Mean"].append(calculate_error(res_vote_mean, human_score))
+            performance_tracker["Voting_Median"].append(calculate_error(res_vote_median, human_score))
 
+    print(f"\n\n✅ Evaluation Complete. Processed {total_samples} samples.")
+    print_report()
 
 # --------------------------------------------------
-# Run experiments
+# Final Report Generation
 # --------------------------------------------------
+def print_report():
+    print("\n" + "="*50)
+    print("📊 FINAL PERFORMANCE REPORT (Mean Absolute Error)")
+    print("Lower is Better (0 = Perfect Match with Human)")
+    print("="*50)
+
+    best_method = ""
+    lowest_error = 999
+
+    for method, errors in performance_tracker.items():
+        # Clean out None values
+        clean_errors = [e for e in errors if e is not None]
+        
+        if clean_errors:
+            avg_error = statistics.mean(clean_errors)
+            print(f"{method:<25} : {avg_error:>6.2f} points avg. error")
+            
+            if avg_error < lowest_error:
+                lowest_error = avg_error
+                best_method = method
+        else:
+            print(f"{method:<25} : DATA ERROR (Failed to get scores)")
+
+    print("="*50)
+    print(f"🏆 WINNER: {best_method}")
+    print(f"This is the method we should use for the final Web App.")
+    print("="*50 + "\n")
+
 if __name__ == "__main__":
-    run_case("L1_VERY_EASY", "L1_S1")   # Integer division trap
-    run_case("L2_EASY", "L2_S2")        # Factorial starts at 0
-    run_case("L4_HARD", "L4_S3")        # Iterative Fibonacci violation
+    run_full_evaluation()
