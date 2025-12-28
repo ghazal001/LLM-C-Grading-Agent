@@ -1,0 +1,56 @@
+# ==============================
+# 🔐 Environment Variables
+# ==============================
+.env
+.env.*
+*.env
+
+# ==============================
+# 🧠 LLM / Application Cache
+# ==============================
+cache/
+.cache/
+llm_cache/
+*.cache
+*.pkl
+*.jsonl
+
+# ==============================
+# 🐍 Python Cache & Build
+# ==============================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# ==============================
+# 🧪 Virtual Environments
+# ==============================
+venv/
+.env_venv/
+nlp_env/
+.venv/
+
+# ==============================
+# 🧰 Jupyter / Experiments
+# ==============================
+.ipynb_checkpoints/
+experiments/output/
+logs/
+*.log
+
+# ==============================
+# 🖥️ OS & Editor Files
+# ==============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ==============================
+# 📊 Streamlit
+# ==============================
+.streamlit/secrets.toml
