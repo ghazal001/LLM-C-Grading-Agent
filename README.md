@@ -34,10 +34,10 @@ Make sure you have the following installed:
     pip install -r requirements.txt
 
     Example requirements.txt
-    streamlit
-    openai>=1.0.0
-    python-dotenv
-    pydantic
+    streamlit==1.52.2
+    openai=2.14.0
+    python-dotenv==1.2.1
+    pydantic==2.12.3
 
 5️⃣ Environment Configuration
 
